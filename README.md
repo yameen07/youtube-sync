@@ -9,14 +9,32 @@ A React-based web application that synchronizes YouTube playback (play, pause, s
 - ✅ Mobile-first responsive design
 - ✅ No cloud services or authentication required
 - ✅ Works entirely on local Wi-Fi network
+- ✅ **Deployable to cloud - use from anywhere!**
+
+## 🚀 Quick Deploy
+
+Want to use this app from anywhere in the world? Deploy it to the cloud!
+
+**Quick options:**
+
+- **[Railway](https://railway.app)** - Easiest deployment (free tier available)
+- **[Render](https://render.com)** - Free hosting with auto-SSL
+- **[Heroku](https://heroku.com)** - Popular platform
+- **Docker** - Deploy anywhere that supports containers
+
+👉 **See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment guide**
+
+After deployment, everyone uses the same URL - no IP addresses needed!
 
 ## Tech Stack
 
 **Backend (Host)**
+
 - Node.js
 - WebSocket library (`ws`)
 
 **Frontend**
+
 - React 18
 - Vite
 - YouTube IFrame Player API
@@ -69,11 +87,13 @@ npm install
 ### Step 3: Find Your Local IP Address (Host)
 
 **On Mac/Linux:**
+
 ```bash
 ifconfig | grep "inet " | grep -v 127.0.0.1
 ```
 
 **On Windows:**
+
 ```bash
 ipconfig
 ```
@@ -90,6 +110,7 @@ npm start
 ```
 
 You should see:
+
 ```
 YouTube Sync WebSocket server running on port 8080
 Connect clients to: ws://YOUR_LOCAL_IP:8080
@@ -100,12 +121,14 @@ Connect clients to: ws://YOUR_LOCAL_IP:8080
 ### Step 5: Start the React App
 
 **On the Host (same laptop):**
+
 ```bash
 cd client
 npm run dev
 ```
 
 You should see output like:
+
 ```
 VITE v5.x.x  ready in xxx ms
 
@@ -114,10 +137,12 @@ VITE v5.x.x  ready in xxx ms
 ```
 
 The app is available at:
+
 - **On your laptop**: `http://localhost:3000`
 - **On other devices**: `http://YOUR_IP:3000` (use the IP from Step 3)
 
 **On Mobile/Client Devices:**
+
 1. **Ensure your mobile device is on the same Wi-Fi network** as your laptop
 2. Open a browser (Safari, Chrome, Firefox, etc.) on your mobile device
 3. Navigate to `http://YOUR_IP:3000` (replace `YOUR_IP` with the IP address from Step 3)
@@ -203,12 +228,14 @@ The app uses JSON messages for synchronization:
 ### Running in Development Mode
 
 **Server:**
+
 ```bash
 cd server
 npm start
 ```
 
 **Client:**
+
 ```bash
 cd client
 npm run dev
@@ -237,4 +264,3 @@ MIT
 ## Support
 
 For issues or questions, check the browser console for error messages and ensure all prerequisites are met.
-

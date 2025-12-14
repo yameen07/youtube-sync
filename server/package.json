@@ -4,7 +4,9 @@
   "description": "WebSocket server for YouTube playback synchronization",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "cd ../client && npm install && npm run build",
+    "postinstall": "npm run build"
   },
   "keywords": [
     "websocket",
@@ -15,5 +17,8 @@
   "license": "MIT",
   "dependencies": {
     "ws": "^8.14.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

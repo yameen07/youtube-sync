@@ -100,7 +100,7 @@ function App() {
             console.error("Error in periodic sync:", error);
           }
         }
-      }, 30000); // Sync every 3 seconds
+      }, 3000); // Sync every 3 seconds
 
       return () => {
         if (periodicSyncIntervalRef.current) {

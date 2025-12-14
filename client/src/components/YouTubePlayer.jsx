@@ -207,7 +207,7 @@ const YouTubePlayer = forwardRef(function YouTubePlayer(
 
       // Only seek if time difference is significant (>0.2s for SEEK, >0.1s for PLAY/PAUSE)
       // This prevents micro-seeks that can cause stuttering
-      const seekThreshold = action === "SEEK" ? 0.2 : 0.1;
+      const seekThreshold = action === "SEEK" ? 0.4 : 0.1;
 
       if (timeDiff > seekThreshold) {
         playerRef.current.seekTo(compensatedTime, true);

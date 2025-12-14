@@ -36,8 +36,45 @@ export function useWebSocketSync(
       return; // Can't connect without host IP
     }
 
-    const wsUrl =
-      role === "host" ? "ws://localhost:8080" : `ws://${hostIp}:8080`;
+    // Determine WebSocket URL
+    let wsUrl;
+    const isLocalhost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    if (role === "host") {
+      if (isLocalhost) {
+        // Local development: use localhost:8080
+        wsUrl = "ws://localhost:8080";
+      } else {
+        // Remote hosting: use same origin with WebSocket protocol
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        wsUrl = `${protocol}//${window.location.host}`;
+      }
+    } else {
+      // Client role
+      if (hostIp) {
+        // Use provided host IP
+        const isRemoteHost =
+          !hostIp.includes("localhost") && !hostIp.includes("127.0.0.1");
+        if (isRemoteHost) {
+          // Remote host: try to detect if we should use secure WebSocket
+          const protocol =
+            window.location.protocol === "https:" ? "wss:" : "ws:";
+          // Use same port as current page, or default to 8080 for ws
+          const port =
+            window.location.port || (protocol === "wss:" ? "" : ":8080");
+          wsUrl = `${protocol}//${hostIp}${port}`;
+        } else {
+          // Local IP provided
+          wsUrl = `ws://${hostIp}:8080`;
+        }
+      } else {
+        // No host IP provided, use current origin
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        wsUrl = `${protocol}//${window.location.host}`;
+      }
+    }
 
     console.log(`Connecting to ${wsUrl}...`);
     setConnectionStatus("connecting");
