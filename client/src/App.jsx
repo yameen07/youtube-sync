@@ -159,8 +159,12 @@ function App() {
    * Connect to WebSocket
    */
   function handleConnect() {
-    if (role === "client" && !hostIp.trim()) {
-      alert("Please enter the host IP address");
+    // For localhost, client needs host IP. For deployed apps, it's optional.
+    const isLocalhost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    if (role === "client" && !hostIp.trim() && isLocalhost) {
+      alert("Please enter the host IP address for local network connection");
       return;
     }
     connect();
@@ -361,29 +365,53 @@ function App() {
             {/* Client: Host IP Input */}
             {role === "client" && (
               <div className="input-group">
-                <label htmlFor="host-ip">Host IP Address:</label>
+                <label htmlFor="host-ip">
+                  Host IP Address (optional for deployed apps):
+                </label>
                 <input
                   id="host-ip"
                   type="text"
                   value={hostIp}
                   onChange={(e) => setHostIp(e.target.value)}
-                  placeholder="192.168.1.100"
+                  placeholder={
+                    window.location.hostname === "localhost" ||
+                    window.location.hostname === "127.0.0.1"
+                      ? "192.168.1.100 (required for local)"
+                      : "Leave empty to use current URL"
+                  }
                   disabled={isConnected}
                 />
-                {role === "host" && (
-                  <small className="help-text">{getLocalIp()}</small>
-                )}
+                <small className="help-text">
+                  {window.location.hostname === "localhost" ||
+                  window.location.hostname === "127.0.0.1"
+                    ? "Enter the host's local IP address (e.g., 192.168.1.100)"
+                    : "Leave empty to connect to the deployed server, or enter a different host IP"}
+                </small>
               </div>
             )}
 
             {/* Host: Show connection info */}
             {role === "host" && (
               <div className="host-info">
-                <p>
-                  Start the WebSocket server, then connect clients to your local
-                  IP.
-                </p>
-                <p className="info-text">Server: ws://localhost:8080</p>
+                {window.location.hostname === "localhost" ||
+                window.location.hostname === "127.0.0.1" ? (
+                  <>
+                    <p>
+                      Start the WebSocket server, then connect clients to your
+                      local IP.
+                    </p>
+                    <p className="info-text">Server: ws://localhost:8080</p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      You're the host! Clients can connect using this same URL.
+                    </p>
+                    <p className="info-text">
+                      Share this URL: <strong>{window.location.origin}</strong>
+                    </p>
+                  </>
+                )}
               </div>
             )}
 
@@ -392,7 +420,12 @@ function App() {
               <button
                 className={`connect-btn ${isConnected ? "connected" : ""}`}
                 onClick={isConnected ? disconnect : handleConnect}
-                disabled={role === "client" && !hostIp.trim()}
+                disabled={
+                  role === "client" &&
+                  !hostIp.trim() &&
+                  (window.location.hostname === "localhost" ||
+                    window.location.hostname === "127.0.0.1")
+                }
               >
                 {isConnected ? "Disconnect" : "Connect"}
               </button>

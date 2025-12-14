@@ -32,10 +32,6 @@ export function useWebSocketSync(
       return; // Already connected
     }
 
-    if (!hostIp && role === "client") {
-      return; // Can't connect without host IP
-    }
-
     // Determine WebSocket URL
     let wsUrl;
     const isLocalhost =
