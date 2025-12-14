@@ -41,21 +41,28 @@ const YouTubePlayer = forwardRef(function YouTubePlayer(
     );
 
     // Only emit events for play/pause (not buffering, etc.)
+    // Both host and clients can emit events when user interacts with player controls
     if (state === window.YT.PlayerState.PLAYING) {
       if (!isSyncingRef.current && onPlayerStateChangeRef.current) {
         const currentTime = player.getCurrentTime();
-        console.log("Host: Emitting PLAY event at", currentTime);
+        console.log(
+          `[${role.toUpperCase()}]: Emitting PLAY event at`,
+          currentTime
+        );
         onPlayerStateChangeRef.current("PLAY", currentTime);
       } else {
-        console.log("Host: Ignoring PLAY event (syncing or no callback)");
+        console.log("Ignoring PLAY event (syncing or no callback)");
       }
     } else if (state === window.YT.PlayerState.PAUSED) {
       if (!isSyncingRef.current && onPlayerStateChangeRef.current) {
         const currentTime = player.getCurrentTime();
-        console.log("Host: Emitting PAUSE event at", currentTime);
+        console.log(
+          `[${role.toUpperCase()}]: Emitting PAUSE event at`,
+          currentTime
+        );
         onPlayerStateChangeRef.current("PAUSE", currentTime);
       } else {
-        console.log("Host: Ignoring PAUSE event (syncing or no callback)");
+        console.log("Ignoring PAUSE event (syncing or no callback)");
       }
     }
   });

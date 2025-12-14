@@ -118,7 +118,8 @@ function App() {
   }, [role, isConnected, isPlaying, videoId, sendSyncEvent]);
 
   /**
-   * Handle player state changes (for host)
+   * Handle player state changes (for both host and clients)
+   * This is called when user interacts with YouTube player controls directly
    */
   function handlePlayerStateChange(action, time) {
     console.log("handlePlayerStateChange called:", {
@@ -135,11 +136,12 @@ function App() {
       setIsPlaying(false);
     }
 
-    if (role === "host" && isConnected) {
-      console.log("Host: Sending sync event:", action, time);
+    // Both host and clients can send sync events when they interact with player
+    if (isConnected) {
+      console.log(`[${role.toUpperCase()}]: Sending sync event:`, action, time);
       sendSyncEvent(action, time);
     } else {
-      console.log("Host: Not sending event (not host or not connected)");
+      console.log("Not sending event (not connected)");
     }
   }
 
@@ -196,6 +198,7 @@ function App() {
 
   /**
    * Load video and sync to all devices
+   * Both host and clients can load videos
    */
   function handleLoadVideo(inputText = null) {
     const textToProcess = inputText || videoIdInput;
@@ -218,7 +221,7 @@ function App() {
     setVideoIdInput(extractedId); // Update input with clean ID
     setIsPlaying(false); // Reset playing state when loading new video
 
-    // Sync video ID to all connected devices
+    // Sync video ID to all connected devices (both host and clients can sync)
     if (isConnected) {
       sendVideoIdSync(extractedId);
     }
@@ -243,10 +246,14 @@ function App() {
 
   /**
    * Send video ID sync to server
+   * Both host and clients can send video sync
    */
   function sendVideoIdSync(videoId) {
-    console.log("📤 [HOST] Attempting to send video ID sync:", videoId);
-    console.log("📤 [HOST] WebSocket state:", {
+    console.log(
+      `📤 [${role.toUpperCase()}] Attempting to send video ID sync:`,
+      videoId
+    );
+    console.log(`📤 [${role.toUpperCase()}] WebSocket state:`, {
       wsRef: !!wsRef,
       wsRefCurrent: !!wsRef?.current,
       readyState: wsRef?.current?.readyState,
@@ -254,7 +261,7 @@ function App() {
     });
 
     if (!wsRef?.current) {
-      console.error("📤 [HOST] WebSocket ref not available");
+      console.error(`📤 [${role.toUpperCase()}] WebSocket ref not available`);
       return;
     }
 
@@ -265,10 +272,10 @@ function App() {
         timestamp: Date.now(),
       });
       wsRef.current.send(message);
-      console.log(`📤 [HOST] Sent video ID sync: ${videoId}`);
+      console.log(`📤 [${role.toUpperCase()}] Sent video ID sync: ${videoId}`);
     } else {
       console.warn(
-        "📤 [HOST] WebSocket not open, readyState:",
+        `📤 [${role.toUpperCase()}] WebSocket not open, readyState:`,
         wsRef.current.readyState
       );
     }
@@ -284,6 +291,7 @@ function App() {
 
   /**
    * Handle play button click
+   * Both host and clients can send sync events
    */
   function handlePlay() {
     if (!playerRef.current || !playerRef.current.isReady) {
@@ -291,17 +299,17 @@ function App() {
       return;
     }
 
-    // Mark as syncing to prevent echo
     const currentTime = playerRef.current.play();
     if (currentTime !== undefined && isConnected) {
       setIsPlaying(true);
-      // Send sync event to server
+      // Send sync event to server (will be broadcast to all other clients)
       sendSyncEvent("PLAY", currentTime);
     }
   }
 
   /**
    * Handle pause button click
+   * Both host and clients can send sync events
    */
   function handlePause() {
     if (!playerRef.current || !playerRef.current.isReady) {
@@ -309,11 +317,10 @@ function App() {
       return;
     }
 
-    // Mark as syncing to prevent echo
     const currentTime = playerRef.current.pause();
     if (currentTime !== undefined && isConnected) {
       setIsPlaying(false);
-      // Send sync event to server
+      // Send sync event to server (will be broadcast to all other clients)
       sendSyncEvent("PAUSE", currentTime);
     }
   }
