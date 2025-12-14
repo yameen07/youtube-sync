@@ -1,0 +1,456 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
+/* App Container */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+  padding: 20px 0;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Main Content */
+.app-main {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Role Selection */
+.role-selection {
+  text-align: center;
+}
+
+.role-selection h2 {
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.role-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.role-btn {
+  padding: 20px 40px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.host-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.client-btn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.role-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.role-btn:active {
+  transform: translateY(0);
+}
+
+/* Configuration */
+.configuration {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.role-display {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.role-badge {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.change-role-btn {
+  padding: 6px 12px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.change-role-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Input Groups */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.input-group input {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.input-group input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.help-text {
+  color: #666;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* Host Info */
+.host-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  border-left: 4px solid #667eea;
+}
+
+.host-info p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.info-text {
+  font-family: monospace;
+  background: white;
+  padding: 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+/* Connection Controls */
+.connection-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.connect-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #667eea;
+  color: white;
+}
+
+.connect-btn:hover:not(:disabled) {
+  background: #5568d3;
+  transform: translateY(-1px);
+}
+
+.connect-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.connect-btn.connected {
+  background: #48bb78;
+}
+
+.connect-btn.connected:hover {
+  background: #38a169;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ccc;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.connected .status-dot {
+  background: #48bb78;
+}
+
+.status-indicator.connecting .status-dot {
+  background: #ed8936;
+}
+
+.status-indicator.error .status-dot {
+  background: #f56565;
+}
+
+.status-text {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Sync Info */
+.sync-info {
+  background: #e6f3ff;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #4299e1;
+}
+
+.sync-info p {
+  margin: 0;
+  color: #2c5282;
+  font-size: 0.9rem;
+}
+
+/* Video Input */
+.video-input {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #eee;
+}
+
+.load-video-btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.load-video-btn:hover {
+  background: #3182ce;
+}
+
+/* Player Section */
+.player-section {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid #eee;
+}
+
+/* Player Controls */
+.player-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.play-pause-btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 120px;
+}
+
+.play-pause-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #5568d3 0%, #6a3d91 100%);
+}
+
+.play-pause-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.play-pause-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #ccc;
+}
+
+.youtube-player-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.youtube-player-container > div {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.player-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1.1rem;
+}
+
+/* Footer */
+.app-footer {
+  text-align: center;
+  color: white;
+  margin-top: 20px;
+  padding: 15px;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .app-main {
+    padding: 20px;
+  }
+
+  .role-buttons {
+    flex-direction: column;
+  }
+
+  .role-btn {
+    width: 100%;
+    padding: 18px;
+  }
+
+  .connection-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .connect-btn {
+    width: 100%;
+  }
+
+  .input-group input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .youtube-player-container {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .role-selection h2 {
+    font-size: 1.4rem;
+  }
+
+  .app-main {
+    padding: 15px;
+  }
+}

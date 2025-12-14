@@ -1,0 +1,19 @@
+{
+  "name": "youtube-sync-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for YouTube playback synchronization",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "websocket",
+    "youtube",
+    "sync"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.14.2"
+  }
+}
