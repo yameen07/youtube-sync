@@ -3,26 +3,36 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy client files
-COPY client/package*.json ./client/
-RUN cd client && npm ci
+# Copy client package files
+COPY client/package.json client/package-lock.json* ./client/
+WORKDIR /app/client
+RUN npm install --no-audit --no-fund
 
+# Copy client source and build
+WORKDIR /app
 COPY client/ ./client/
-RUN cd client && npm run build
+WORKDIR /app/client
+RUN npm run build
 
 # Production stage
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy server files
-COPY server/package*.json ./server/
-RUN cd server && npm ci --only=production
+# Copy server package files first
+COPY server/package.json ./server/
+COPY server/package-lock.json* ./server/
+
+# Install server dependencies (skip scripts to avoid postinstall build)
+WORKDIR /app/server
+RUN npm install --only=production --ignore-scripts --no-audit --no-fund
+
+WORKDIR /app
 
 # Copy built client files from builder
 COPY --from=builder /app/client/dist ./client/dist
 
-# Copy server code
+# Copy server code (after dependencies are installed)
 COPY server/ ./server/
 
 WORKDIR /app/server
